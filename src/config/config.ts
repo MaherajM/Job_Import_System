@@ -1,5 +1,5 @@
-import Joi, { type ValidationResult } from "joi";
-import dotenv from "dotenv";
+import Joi, { type ValidationResult } from 'joi';
+import dotenv from 'dotenv';
 
 interface IEnvVars {
   PORT: string;
@@ -7,6 +7,7 @@ interface IEnvVars {
   DATABASE_NAME: string;
   DATABASE_USERNAME: string;
   DATABASE_PASSWORD: string;
+  CONFIGURABLE_CONCURRENCY: string;
 }
 
 dotenv.config();
@@ -18,6 +19,9 @@ const envVarsSchema = Joi.object<IEnvVars>({
   DATABASE_NAME: Joi.string().required().description('DATABASE_NAME is required'),
   DATABASE_USERNAME: Joi.string().required().description('DATABASE_USERNAME is required'),
   DATABASE_PASSWORD: Joi.string().required().description('DATABASE_PASSWORD is required'),
+  CONFIGURABLE_CONCURRENCY: Joi.string()
+    .required()
+    .description('CONFIGURABLE_CONCURRENCY is required'),
 });
 
 const { error, value }: ValidationResult = envVarsSchema.validate(process.env, {
@@ -37,6 +41,7 @@ const config: IEnvVars = {
   DATABASE_NAME: envVars.DATABASE_NAME,
   DATABASE_USERNAME: envVars.DATABASE_USERNAME,
   DATABASE_PASSWORD: envVars.DATABASE_PASSWORD,
+  CONFIGURABLE_CONCURRENCY: process.env.CONFIGURABLE_CONCURRENCY || '1',
 };
 
 export default config;
