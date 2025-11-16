@@ -7,9 +7,9 @@ router.get('/health', (req, res) => {
   res.send({
     status: 'Alive',
     timestamp: new Date().toISOString(),
-    message: 'Job routes are healthy',
+    message: 'Job fd routes are healthy',
   });
 });
-router.get('/jobs', JobController.getJobController);
+router.get('/', JobController.getJobPaginatedController);
 
 export default router;
