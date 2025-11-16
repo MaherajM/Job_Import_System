@@ -24,24 +24,3 @@ void (async () => {
       process.exit(1);
     });
 })();
-
-
-// import { jobQueue } from "./config/jobqueue";
-
-// async function runPOC() {
-//   console.log("🚀 Adding job to queue...");
-
-//   jobQueue.add("fetch-job", {
-//     msg: "Hello from BullMQ!",
-//     timestamp: new Date().toISOString(),
-//   });
-
-//   jobQueue.add("fetch-job-2", {
-//     msg: "Hello from BullMQ!-2",
-//     timestamp: new Date().toISOString(),
-//   });
-
-//   console.log("📥 Job added!");
-// }
-
-// runPOC();

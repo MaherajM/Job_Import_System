@@ -2,7 +2,7 @@ import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import logger from '../lib/logger';
-import jobRouter from '../routes/job.routes';
+import routes from '../routes/index';
 
 function createServer() {
   return new Promise<Express>((resolve, reject) => {
@@ -22,7 +22,7 @@ function createServer() {
         });
       });
 
-      app.use('/api', jobRouter);
+      app.use('/api', routes);
 
       logger.info('Express server created successfully');
       resolve(app);

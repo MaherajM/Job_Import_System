@@ -14,11 +14,10 @@ const feeds = [
 ];
 
 export const jobCron = () => {
-  cron.schedule('*/1 * * * *', async () => {
+  cron.schedule('0 * * * *', async () => {
     console.log('Job cron started at', new Date().toISOString());
     for (const feedUrl of feeds) {
       try {
-        console.log('Processing feed:', feedUrl);
         const jobServices = await JobService.getJobServices(feedUrl);
         jobQueue.add('job-' + feedUrl, {
           feedUrl: feedUrl,
@@ -26,22 +25,9 @@ export const jobCron = () => {
           timestamp: new Date().toISOString(),
           data: jobServices.jobs,
         });
-        // console.log('Fetched While Crone', jobServices);
-        // for (const job of jobServices.jobs) {
-        // await JobService.createOrUpdateJob(job);
-        // }
-        // console.log(`Processed feed`);
       } catch (error) {
         console.error(`Error processing feed`, error);
       }
     }
-    const counts = await jobQueue.getJobCounts();
-    const failed = await jobQueue.getFailed();
-
-    console.log('Job cron completed at', new Date().toISOString());
-    const reasons = failed.forEach((fj) => {
-      console.log(`- Failed Job ID: ${fj.id}, Reason: ${fj.failedReason}`);
-    });
-    console.log('📊 Current Job Counts after completion:', counts, reasons);
   });
 };

@@ -4,7 +4,7 @@ interface IJobSchema {
   title: string;
   jobId: number;
   link: string;
-  pubdate: string;
+  pubDate: string;
   guid: {
     isPermaLink: boolean;
     text: string;
@@ -25,7 +25,7 @@ const JobSchema: Schema<IJobSchema> = new Schema(
     title: { type: String },
     jobId: { type: Number },
     link: { type: String },
-    pubdate: { type: String },
+    pubDate: { type: String },
     guid: {
       isPermaLink: { type: Boolean },
       text: { type: String, unique: true },

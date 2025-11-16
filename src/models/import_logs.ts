@@ -1,11 +1,12 @@
 import { Schema, model } from 'mongoose';
 
-interface IImportLogSchema {
+export interface IImportLogSchema {
   totalFetched: number;
   totalImported: number;
   failedCount: number;
   newJobs: number;
   updatedJobs: number;
+  feedURL: string;
   failedJobs: [
     {
       jobId: string;
@@ -20,6 +21,7 @@ const ImportLogSchema: Schema<IImportLogSchema> = new Schema(
     totalImported: { type: Number },
     failedCount: { type: Number },
     newJobs: { type: Number },
+    feedURL: { type: String },
     updatedJobs: { type: Number },
     failedJobs: [
       {

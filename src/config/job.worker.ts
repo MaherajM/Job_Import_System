@@ -2,6 +2,7 @@ import { Worker, Job } from 'bullmq';
 import JobService from '../services/job.service';
 import { jobQueue } from './jobqueue';
 import config from './config';
+import importLogService from '../services/importLog.service';
 
 export const jobWorker = new Worker(
   'job-queue',
@@ -9,37 +10,31 @@ export const jobWorker = new Worker(
     try {
       const counts = await jobQueue.getJobCounts();
       const failed = await jobQueue.getFailed();
-      //   console.log('📊 Current Job Counts:', counts);
       const reasons = failed.map((fj) => ({
         jobId: fj.id,
         reason: fj.failedReason,
       }));
-      const reasonsSummary = failed
-        .map((fj) => `- Failed Job ID: ${fj.id}, Reason: ${fj.failedReason}`)
-        .join('\n');
+
       console.log('DEBUG MAIN', reasons, failed.length);
-      //   console.log('👷 Worker Processing Job:', job.id);
-      // console.log("Job Data:", job.data);
-      console.log('Job Data full:', job.data);
 
       await new Promise((res) => setTimeout(res, 5000));
-
-      console.log('✅ Job Completed:', job.id);
 
       if (job?.data?.data?.length > 0) {
         const result = await JobService.importJobs(job.data, counts);
         console.log('Import >>>>', result);
-
+        return result;
       } else {
         console.log('No jobs to import for job id:', job.id);
       }
-
-      return { status: 'done' };
     } catch (error) {
       console.error('Error in job worker:', error);
       return {
+        feedURL: job.data.feedUrl,
         error: true,
-        message: error.message,
+        bullWorkerError: {
+          reason: error.message,
+          stack: error.stack,
+        },
       };
     }
   },
@@ -52,8 +47,9 @@ export const jobWorker = new Worker(
   },
 );
 
-jobWorker.on('completed', async (job) => {
-  console.log('progress log while completed >>>>', job.id);
+jobWorker.on('completed', async (job, result) => {
+  console.log('progress log while completed >>>>', result);
+  await importLogService.createImportLog(result);
 });
 
 jobWorker.on('failed', (job, err) => {
