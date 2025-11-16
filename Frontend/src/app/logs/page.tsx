@@ -16,8 +16,6 @@ export default function LogsPage() {
     refetchOnWindowFocus: false,
   });
 
-  console.log("LogsPage data:", data);
-
   if (isLoading)
     return (
       <Box sx={{ p: 4, textAlign: "center" }}>

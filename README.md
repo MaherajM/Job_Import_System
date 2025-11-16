@@ -1,4 +1,11 @@
-**MAIN NOTES: If you want to start Backend then you have to put .env and start redis server locally. If one of them are not exist then error occures. (I'll already sent .env in MAIL while Tasks Submission)**
+**MAIN NOTE (Important for Running Backend)**
+
+**To run the backend successfully, two things must be available:**
+**A valid .env file**
+**Redis server running locally**
+**If either of these is missing, the backend will throw errors and will not start.**
+
+**(I have already included the .env file in the task submission email.)**
 
 ### Backend
 - Fetch and parse XML job feeds

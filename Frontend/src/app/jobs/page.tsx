@@ -16,8 +16,6 @@ export default function JobsPage() {
     refetchOnWindowFocus: false,
   });
 
-  console.log("JobsPage data:", data);
-
   if (isLoading)
     return (
       <Box sx={{ p: 4, textAlign: "center" }}>
