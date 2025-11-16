@@ -15,13 +15,10 @@ export const jobWorker = new Worker(
         reason: fj.failedReason,
       }));
 
-      console.log('DEBUG MAIN', reasons, failed.length);
-
       await new Promise((res) => setTimeout(res, 5000));
 
       if (job?.data?.data?.length > 0) {
         const result = await JobService.importJobs(job.data, counts);
-        console.log('Import >>>>', result);
         return result;
       } else {
         console.log('No jobs to import for job id:', job.id);
@@ -48,11 +45,9 @@ export const jobWorker = new Worker(
 );
 
 jobWorker.on('completed', async (job, result) => {
-  console.log('progress log while completed >>>>', result);
   await importLogService.createImportLog(result);
 });
 
 jobWorker.on('failed', (job, err) => {
-  console.log('error log while failed', job?.data);
   console.error(`Worker: Job ${job?.id} failed`, err);
 });

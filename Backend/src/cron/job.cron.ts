@@ -15,7 +15,6 @@ const feeds = [
 
 export const jobCron = () => {
   cron.schedule('0 * * * *', async () => {
-    console.log('Job cron started at', new Date().toISOString());
     for (const feedUrl of feeds) {
       try {
         const jobServices = await JobService.getJobServices(feedUrl);

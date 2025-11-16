@@ -84,10 +84,7 @@ class JobService {
 
       let failedJobs: any[] = [];
 
-      await asyncForEach(jobs.data, async (job: any) => {
-
-        console.log("Importing Job ID pubDate:", job);
-          
+      await asyncForEach(jobs.data, async (job: any) => {          
         try {
           const existing = await JobModel.findOne({ 'guid.text': job.guid.text }).lean();
 
@@ -113,15 +110,6 @@ class JobService {
             reason: err.message,
           });
         }
-      });
-
-      console.log('DEBUG JOBS', {
-        totalFetched: stats.total,
-        totalImported: stats.created,
-        failedCount: stats.failed,
-        newJobs: stats.created,
-        updatedJobs: stats.updated,
-        feedURL: jobs.feedUrl,
       });
 
       return {
